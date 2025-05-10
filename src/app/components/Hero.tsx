@@ -23,7 +23,7 @@ const Hero = () => {
                         className="px-6 py-3 bg-black text-white rounded-xl hover:bg-gray-800 transition flex items-center space-x-2 font-Manrope-Medium"
                     >
                         <img
-                            src="/images/join.png"
+                            src="/images/Join.png"
                             alt="Join Icon"
                             className="w-6 h-6 mr-2"
                         />
