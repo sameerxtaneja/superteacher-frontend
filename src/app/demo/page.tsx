@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 
 // API endpoints for chat and conversation management
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 type Message = {
   content: string;
@@ -17,7 +17,8 @@ type Message = {
 
 type Conversation = {
   conversation_id: string;
-  preview: { content: string }[];
+  preview: { content: string; role: string }[];
+  message_count: number;
 };
 
 export default function ChatPage() {
@@ -25,24 +26,12 @@ export default function ChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-  const [questionPaper, setQuestionPaper] = useState<File | null>(null);
-  const [answerSheet, setAnswerSheet] = useState<File | null>(null);
-  const [subject, setSubject] = useState("");
-  const [fileUploadType, setFileUploadType] = useState<
-    "question" | "answer" | null
-  >(null);
-  // Added states for conversation management
   const [conversations, setConversations] = useState<
     Record<string, Conversation>
   >({});
   const [currentConversationId, setCurrentConversationId] = useState<
     string | null
   >(null);
-  const [isGrading, setIsGrading] = useState(false);
-  const [lastMessageCount, setLastMessageCount] = useState(0);
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(
-    null
-  );
   const [selectedFile, setSelectedFile] = useState<{
     name: string;
     dataUrl: string;
@@ -65,7 +54,7 @@ export default function ChatPage() {
     setMessages([
       {
         content:
-          "Hello! I'm the AI Grader assistant. You can chat with me about any educational topic, or upload question papers and answer sheets for AI grading.",
+          "Hello! I'm the AI Grader assistant. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
         role: "assistant",
         timestamp: new Date(),
       },
@@ -94,17 +83,18 @@ export default function ChatPage() {
   };
 
   // Fetch all conversations
-  const fetchConversations = () => {
-    fetch(`${API_URL}/api/conversations`)
-      .then((response) => response.json())
-      .then((data) => {
-        const conversationsMap: Record<string, Conversation> = {};
-        data.conversations.forEach((conv: Conversation) => {
-          conversationsMap[conv.conversation_id] = conv;
-        });
-        setConversations(conversationsMap);
-      })
-      .catch((error) => console.error("Error fetching conversations:", error));
+  const fetchConversations = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/conversations`);
+      const data = await response.json();
+      const conversationsMap: Record<string, Conversation> = {};
+      data.conversations.forEach((conv: Conversation) => {
+        conversationsMap[conv.conversation_id] = conv;
+      });
+      setConversations(conversationsMap);
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
+    }
   };
 
   // Create a new conversation
@@ -113,113 +103,34 @@ export default function ChatPage() {
     setMessages([
       {
         content:
-          "Hello! I'm the AI Grader assistant. You can chat with me about any educational topic, or upload question papers and answer sheets for AI grading.",
+          "Hello! I'm the AI Grader assistant. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
         role: "assistant",
         timestamp: new Date(),
       },
     ]);
     setInput("");
-
-    // Stop any active polling
-    stopPolling();
-
-    // Reset state
-    setIsGrading(false);
-    setLastMessageCount(0);
   };
 
   // Load a conversation
-  const loadConversation = (conversationId: string) => {
+  const loadConversation = async (conversationId: string) => {
     setCurrentConversationId(conversationId);
     setMessages([]);
 
-    // Stop any active polling
-    stopPolling();
+    try {
+      const response = await fetch(
+        `${API_URL}/api/conversations/${conversationId}`
+      );
+      const data = await response.json();
+      const messagesList: Message[] = data.messages.map((msg: any) => ({
+        content: msg.content,
+        role: msg.role,
+        timestamp: new Date(),
+      }));
 
-    fetch(`${API_URL}/api/conversations/${conversationId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const messagesList: Message[] = data.messages.map((msg: any) => ({
-          content: msg.content,
-          role: msg.role,
-          timestamp: new Date(), // Using current time as the API might not return timestamps
-        }));
-
-        setMessages(messagesList);
-
-        // Update message count
-        setLastMessageCount(data.messages.length);
-
-        // Check if we should be polling (if conversation is in grading state)
-        const lastMessage = data.messages[data.messages.length - 1];
-        if (
-          lastMessage &&
-          lastMessage.role === "assistant" &&
-          lastMessage.content.includes("🛠️  System is currently grading")
-        ) {
-          setIsGrading(true);
-          startPolling();
-        }
-      })
-      .catch((error) => console.error("Error loading conversation:", error));
-  };
-
-  // Start polling for updates
-  const startPolling = () => {
-    if (!currentConversationId || pollingInterval) return;
-
-    console.log("Started polling for updates...");
-    const interval = setInterval(pollForUpdates, 2000); // Poll every 2 seconds
-    setPollingInterval(interval);
-  };
-
-  // Stop polling
-  const stopPolling = () => {
-    if (pollingInterval) {
-      console.log("Stopped polling for updates.");
-      clearInterval(pollingInterval);
-      setPollingInterval(null);
+      setMessages(messagesList);
+    } catch (error) {
+      console.error("Error loading conversation:", error);
     }
-    setIsGrading(false);
-  };
-
-  // Poll for updates to the conversation
-  const pollForUpdates = () => {
-    if (!currentConversationId || !isGrading) {
-      stopPolling();
-      return;
-    }
-
-    fetch(`${API_URL}/api/conversations/${currentConversationId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.messages && data.messages.length > lastMessageCount) {
-          // We have new messages
-          const newMessages = data.messages.slice(lastMessageCount);
-
-          const newMessagesList: Message[] = newMessages.map((msg: any) => ({
-            content: msg.content,
-            role: msg.role,
-            timestamp: new Date(),
-          }));
-
-          setMessages((prev) => [...prev, ...newMessagesList]);
-
-          // Check if this is the final message
-          const lastNewMessage = newMessages[newMessages.length - 1];
-          if (
-            lastNewMessage.role === "assistant" &&
-            (lastNewMessage.content.includes("✅ Grading complete") ||
-              lastNewMessage.content.includes("❌ Grading failed"))
-          ) {
-            stopPolling();
-          }
-
-          // Update our message counter
-          setLastMessageCount(data.messages.length);
-        }
-      })
-      .catch((error) => console.error("Error polling for updates:", error));
   };
 
   // Handle file upload button click
@@ -233,6 +144,13 @@ export default function ChatPage() {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
+
+      // Check if it's a PDF file
+      if (file.type !== "application/pdf") {
+        alert("Please upload only PDF files");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = function (e) {
         const result = e.target?.result as string;
@@ -263,7 +181,8 @@ export default function ChatPage() {
 
   // Get file extension helper
   const getFileExtension = (filename: string) => {
-    return filename.slice(((filename.lastIndexOf(".") - 1) >>> 0) + 1);
+    const lastDot = filename.lastIndexOf(".");
+    return lastDot !== -1 ? filename.substring(lastDot) : "";
   };
 
   // Send a message
@@ -326,31 +245,50 @@ export default function ChatPage() {
         throw new Error(`Server error: ${response.status}`);
       }
 
-      const data = await response.json();
+      // Check if the response is a PDF (graded document)
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/pdf")) {
+        // Handle PDF response
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "graded_answer_sheet.pdf";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
 
-      // Save conversation ID
-      setCurrentConversationId(data.conversation_id);
+        // Add success message to chat
+        const successMessage: Message = {
+          content:
+            "✅ Grading complete! Your graded answer sheet has been downloaded.",
+          role: "assistant",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, successMessage]);
 
-      // Add AI response to chat
-      const aiMessage: Message = {
-        content: data.message,
-        role: "assistant",
-        timestamp: new Date(),
-      };
+        // Update conversations list
+        await fetchConversations();
+      } else {
+        // Handle JSON response
+        const data = await response.json();
 
-      setMessages((prev) => [...prev, aiMessage]);
+        // Save conversation ID
+        setCurrentConversationId(data.conversation_id);
 
-      // Update message counter
-      setLastMessageCount((prev) => prev + 2); // 1 for user message, 1 for AI response
+        // Add AI response to chat
+        const aiMessage: Message = {
+          content: data.message,
+          role: "assistant",
+          timestamp: new Date(),
+        };
 
-      // Check if this is a grading message
-      if (data.message.includes("🛠️  System is currently grading")) {
-        setIsGrading(true);
-        startPolling();
+        setMessages((prev) => [...prev, aiMessage]);
+
+        // Update conversations list
+        await fetchConversations();
       }
-
-      // Update conversations list
-      fetchConversations();
     } catch (error) {
       console.error("Error sending message:", error);
 
@@ -370,12 +308,6 @@ export default function ChatPage() {
   // Process message content for rendering - simple markdown support
   const processMessageContent = (content: string, isUser: boolean) => {
     if (isUser) return content;
-
-    // Get the backend URL from environment variable
-    const BACKEND_URL =
-      process.env.NEXT_PUBLIC_API_URL || "http://34.57.58.107:8000";
-    const FRONTEND_URL =
-      typeof window !== "undefined" ? window.location.origin : "";
 
     // Process code blocks
     let processedContent = content.replace(
@@ -403,46 +335,6 @@ export default function ChatPage() {
     // Convert line breaks to <br>
     processedContent = processedContent.replace(/\n/g, "<br>");
 
-    // Fix malformed URLs - replace localhost with production URL
-    processedContent = processedContent.replace(
-      /href=["']https?:\/\/localhost:[0-9]+\/api\/download\//g,
-      `href="${BACKEND_URL}/api/download/`
-    );
-
-    // Fix malformed URLs with apihttp: prefix
-    processedContent = processedContent.replace(
-      /href=["'][^"']*apihttp:[^"']*\/api\/download\//g,
-      `href="${BACKEND_URL}/api/download/`
-    );
-
-    // Fix URLs that contain both frontend and backend domains
-    if (FRONTEND_URL) {
-      const escapedFrontendUrl = FRONTEND_URL.replace(
-        /[.*+?^${}()|[\]\\]/g,
-        "\\$&"
-      );
-      const urlRegex = new RegExp(
-        `href=["']${escapedFrontendUrl}[^"']*apihttp:[^"']*\/api\/download\/`,
-        "g"
-      );
-      processedContent = processedContent.replace(
-        urlRegex,
-        `href="${BACKEND_URL}/api/download/`
-      );
-    }
-
-    // Direct replacement for specific URL pattern with hosted backend
-    processedContent = processedContent.replace(
-      /href=["'][^"']*apihttp:\/[^"']*\/api\/download\/([^"']+)["']/gi,
-      `href="${BACKEND_URL}/api/download/$1"`
-    );
-
-    // Make all PDF links have a consistent style and target
-    processedContent = processedContent.replace(
-      /<a\s+href=["']([^"']+\/api\/download\/[^"']+)["']([^>]*)>/gi,
-      `<a href="$1" target="_blank" class="text-blue-500 hover:underline" $2>`
-    );
-
     return processedContent;
   };
 
@@ -455,6 +347,19 @@ export default function ChatPage() {
         handleSubmit(e as unknown as React.FormEvent);
       }
     }
+  };
+
+  // Helper function to get conversation preview
+  const getConversationPreview = (conversation: Conversation) => {
+    if (conversation.preview && conversation.preview.length > 0) {
+      const firstUserMessage = conversation.preview.find(
+        (msg) => msg.role === "user"
+      );
+      return firstUserMessage
+        ? firstUserMessage.content.substring(0, 30) + "..."
+        : "Conversation";
+    }
+    return "New Conversation";
   };
 
   return (
@@ -497,11 +402,11 @@ export default function ChatPage() {
               <div className="border-b border-gray-200 p-4 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <h2 className="text-lg font-semibold">
-                    {currentConversationId
-                      ? conversations[
-                          currentConversationId
-                        ]?.preview?.[0]?.content.substring(0, 30) + "..." ||
-                        "Conversation"
+                    {currentConversationId &&
+                    conversations[currentConversationId]
+                      ? getConversationPreview(
+                          conversations[currentConversationId]
+                        )
                       : "New Conversation"}
                   </h2>
 
@@ -562,9 +467,7 @@ export default function ChatPage() {
                             }}
                             className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 truncate"
                           >
-                            {conv.preview && conv.preview.length > 0
-                              ? conv.preview[0].content.substring(0, 30) + "..."
-                              : "New Conversation"}
+                            {getConversationPreview(conv)}
                           </button>
                         ))}
                       </div>
@@ -635,6 +538,7 @@ export default function ChatPage() {
                 ref={fileInputRef}
                 onChange={handleFileSelect}
                 className="hidden"
+                accept=".pdf"
               />
 
               {/* Chat Input with Upload Button */}
@@ -672,6 +576,7 @@ export default function ChatPage() {
                     onClick={handleFileUploadClick}
                     disabled={loading}
                     className="p-2 rounded-full hover:bg-gray-200 mr-2"
+                    title="Upload PDF file"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
