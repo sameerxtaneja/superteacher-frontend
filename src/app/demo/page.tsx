@@ -105,7 +105,7 @@ export default function ChatPage() {
     setMessages([
       {
         content:
-          "Hello! I'm the Super Teacher. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
+          "Hello! I'm SuperTeacher AI. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
         role: "assistant",
         timestamp: new Date(),
       },
