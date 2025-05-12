@@ -38,6 +38,8 @@ export default function ChatPage() {
     type: string;
     size: number;
   } | null>(null);
+  const [gradingInProgress, setGradingInProgress] = useState(false);
+  const [pdfBlob, setPdfBlob] = useState<Blob | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -54,7 +56,7 @@ export default function ChatPage() {
     setMessages([
       {
         content:
-          "Hello! I'm the AI Grader assistant. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
+          "Hello! I'm the Super Teacher. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
         role: "assistant",
         timestamp: new Date(),
       },
@@ -103,7 +105,7 @@ export default function ChatPage() {
     setMessages([
       {
         content:
-          "Hello! I'm the AI Grader assistant. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
+          "Hello! I'm the Super Teacher. To grade an answer sheet, I'll need:\n1. The subject\n2. The question paper (PDF)\n3. The answer sheet (PDF)\n\nPlease provide these materials and I'll help you grade them!",
         role: "assistant",
         timestamp: new Date(),
       },
@@ -208,6 +210,22 @@ export default function ChatPage() {
     setMessages((prev) => [...prev, userMessage]);
     setLoading(true);
 
+    // Set up timer to show grading in progress message after 5 seconds if a file is being submitted
+    let gradingMessageTimer: NodeJS.Timeout | null = null;
+    if (selectedFile) {
+      gradingMessageTimer = setTimeout(() => {
+        setGradingInProgress(true);
+        // Add grading in progress message
+        const gradingMessage: Message = {
+          content:
+            "Grading in progress... I'm analyzing the answer sheet. This may take a few moments. Please wait while the results are being prepared.",
+          role: "assistant",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, gradingMessage]);
+      }, 5000);
+    }
+
     // Prepare request data
     const requestData: any = {
       message_text: messageText,
@@ -250,19 +268,22 @@ export default function ChatPage() {
       if (contentType && contentType.includes("application/pdf")) {
         // Handle PDF response
         const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "graded_answer_sheet.pdf";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+
+        // Store the PDF blob for later download
+        setPdfBlob(blob);
+
+        // Remove grading in progress message if it exists
+        if (gradingInProgress) {
+          setGradingInProgress(false);
+          setMessages((prev) =>
+            prev.filter((msg) => !msg.content.includes("Grading in progress"))
+          );
+        }
 
         // Add success message to chat
         const successMessage: Message = {
           content:
-            "✅ Grading complete! Your graded answer sheet has been downloaded.",
+            "✅ Grading complete! Your graded answer sheet is ready. Click the button below to download it.",
           role: "assistant",
           timestamp: new Date(),
         };
@@ -271,6 +292,16 @@ export default function ChatPage() {
         // Update conversations list
         await fetchConversations();
       } else {
+        // Handle JSON response
+
+        // Remove grading in progress message if it exists
+        if (gradingInProgress) {
+          setGradingInProgress(false);
+          setMessages((prev) =>
+            prev.filter((msg) => !msg.content.includes("Grading in progress"))
+          );
+        }
+
         // Handle JSON response
         const data = await response.json();
 
@@ -292,6 +323,14 @@ export default function ChatPage() {
     } catch (error) {
       console.error("Error sending message:", error);
 
+      // Remove grading in progress message if it exists
+      if (gradingInProgress) {
+        setGradingInProgress(false);
+        setMessages((prev) =>
+          prev.filter((msg) => !msg.content.includes("Grading in progress"))
+        );
+      }
+
       // Add error message to chat
       const errorMessage: Message = {
         content: `Sorry, there was an error processing your request. Please try again.`,
@@ -301,7 +340,25 @@ export default function ChatPage() {
 
       setMessages((prev) => [...prev, errorMessage]);
     } finally {
+      // Clear the timer if it exists
+      if (gradingMessageTimer) {
+        clearTimeout(gradingMessageTimer);
+      }
       setLoading(false);
+    }
+  };
+
+  // Download PDF function
+  const downloadPdf = () => {
+    if (pdfBlob) {
+      const url = window.URL.createObjectURL(pdfBlob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "graded_answer_sheet.pdf";
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     }
   };
 
@@ -381,7 +438,7 @@ export default function ChatPage() {
                 className="w-10 h-10 object-contain rounded-full"
               />
               <h1 className="text-2xl font-bold text-gray-900">
-                AI Grader Chat
+                SuperTeacher AI
               </h1>
             </div>
             <button
@@ -496,15 +553,44 @@ export default function ChatPage() {
                     >
                       {/* Regular text message */}
                       {!message.isFile && (
-                        <div
-                          className="text-sm whitespace-pre-wrap"
-                          dangerouslySetInnerHTML={{
-                            __html: processMessageContent(
-                              message.content,
-                              message.role === "user"
-                            ),
-                          }}
-                        />
+                        <div>
+                          <div
+                            className="text-sm whitespace-pre-wrap"
+                            dangerouslySetInnerHTML={{
+                              __html: processMessageContent(
+                                message.content,
+                                message.role === "user"
+                              ),
+                            }}
+                          />
+
+                          {/* Download button for completed grading */}
+                          {message.role === "assistant" &&
+                            message.content.includes("Grading complete") &&
+                            pdfBlob && (
+                              <button
+                                onClick={downloadPdf}
+                                className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="16"
+                                  height="16"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth="2"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                >
+                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                  <polyline points="7 10 12 15 17 10"></polyline>
+                                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                Download Graded PDF
+                              </button>
+                            )}
+                        </div>
                       )}
 
                       {/* File message */}
@@ -618,7 +704,8 @@ export default function ChatPage() {
       <footer className="bg-white/70 backdrop-blur-md border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-500">
-            &copy; {new Date().getFullYear()} AI Grader. All rights reserved.
+            &copy; {new Date().getFullYear()} SuperTeacher AI. All rights
+            reserved.
           </p>
         </div>
       </footer>
