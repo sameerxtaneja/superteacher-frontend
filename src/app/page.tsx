@@ -1,73 +1,142 @@
-"use client";
+'use client';
 
-import Navbar from "./Navbar";
-import React from "react";
-import Hero from "./components/Hero";
-import HowItWorks from "./components/HowItWorks";
-import Mission from "./components/Mission";
-import VaraPowered from "./components/VaraPowered";
-import Approach from "./components/Approach";
-import ClosingCTA from "./components/ClosingCTA";
-import PageNavigation from "./components/PageNavigation";
-import WhyWeStarted from "./components/WhyweStarted";
-import TeacherTestimonials from "./components/buildingWithTeachers";
-import OurVision from "./components/OurVision";
-import GradingSection from "./components/GradingSection";
-import ConnectInvitation from "./components/ConnectInvitation";
-import HeresHow from "./components/Hereshow";
+import Navbar from './Navbar';
+import React from 'react';
+import Hero from './components/Hero';
+import HowItWorks from './components/HowItWorks';
+import Mission from './components/Mission';
+import VaraPowered from './components/VaraPowered';
+import Approach from './components/Approach';
+import ClosingCTA from './components/ClosingCTA';
+import PageNavigation from './components/PageNavigation';
+import WhyWeStarted from './components/WhyweStarted';
+import TeacherTestimonials from './components/buildingWithTeachers';
+import OurVision from './components/OurVision';
+import GradingSection from './components/GradingSection';
+import ConnectInvitation from './components/ConnectInvitation';
+import HeresHow from './components/Hereshow';
+import FadeIn from '@/components/FadeIn';
+import SectionDivider from '@/components/SectionDivider';
 
 const Page = () => {
   return (
-    <div
-      style={{
-        backgroundColor: "#FFF9F3",
-      }}
-    >
+    <div className="bg-white">
       <Navbar />
       <PageNavigation />
-      <div id="hero">
-        <Hero />
-      </div>
-      <div id="howItWorks">
-        <HowItWorks />
+
+      <div id="hero" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <Hero />
+          </FadeIn>
+        </div>
       </div>
 
-      <div id="whyWeStarted">
-        <WhyWeStarted />
-      </div>
-      <div id="mission">
-        <Mission />
+      <SectionDivider />
+
+      <div id="howItWorks" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <HowItWorks />
+          </FadeIn>
+        </div>
       </div>
 
-      <div id="ourVision">
-        <OurVision />
+      <SectionDivider />
+
+      <div id="whyWeStarted" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <WhyWeStarted />
+          </FadeIn>
+        </div>
       </div>
 
-      <div id="heresHow">
-        <HeresHow />
+      <SectionDivider />
+
+      <div id="mission" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <Mission />
+          </FadeIn>
+        </div>
       </div>
 
-      <div id="teacherTestimonials">
-        <TeacherTestimonials />
+      <SectionDivider />
+
+      <div id="ourVision" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <OurVision />
+          </FadeIn>
+        </div>
       </div>
 
-      {/* <div id="grading">
-        <GradingSection />
+      <SectionDivider />
+
+      <div id="heresHow" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <HeresHow />
+          </FadeIn>
+        </div>
+      </div>
+
+      <SectionDivider />
+
+      <div id="teacherTestimonials" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <TeacherTestimonials />
+          </FadeIn>
+        </div>
+      </div>
+
+      {/* <SectionDivider />
+      <div id="grading" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <GradingSection />
+          </FadeIn>
+        </div>
       </div> */}
 
-      {/* <div id="varaPowered">
-        <VaraPowered />
+      {/* <SectionDivider />
+      <div id="varaPowered" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <VaraPowered />
+          </FadeIn>
+        </div>
       </div> */}
 
-      <div id="connect-invite">
-        <ConnectInvitation />
+      <SectionDivider />
+
+      <div id="connect-invite" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <ConnectInvitation />
+          </FadeIn>
+        </div>
       </div>
 
-      {/* <div id="approach">
-        <Approach />
+      {/* <SectionDivider />
+      <div id="approach" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <Approach />
+          </FadeIn>
+        </div>
       </div> */}
-      <div id="closingCTA">
-        <ClosingCTA />
+
+      <SectionDivider />
+
+      <div id="closingCTA" className="py-10 md:py-16 bg-white rounded-t-[32px]">
+        <div className="max-w-screen-xl mx-auto px-4">
+          <FadeIn>
+            <ClosingCTA />
+          </FadeIn>
+        </div>
       </div>
     </div>
   );

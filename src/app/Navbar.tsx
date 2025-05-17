@@ -1,13 +1,16 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleClose = () => setIsOpen(false);
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 backdrop-blur-md bg-white/50 rounded-3xl mt-8 shadow-lg">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 backdrop-blur-md bg-white/50 rounded-3xl mt-6 shadow-lg">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/">
@@ -15,71 +18,86 @@ export default function Navbar() {
               <img
                 src="/images/Stlogo.png"
                 alt="Logo"
-                className="w-13 h-13 object-contain rounded-full"
+                className="w-10 h-10 object-contain rounded-full"
               />
-              <h1 className="text-black text-2xl">Super Teacher</h1>
+              <h1 className="text-black text-xl font-bold">Super Teacher</h1>
             </div>
           </Link>
 
-          {/* Desktop Links */}
-          <div className="hidden sm:flex space-x-6">
+          {/* Desktop Nav */}
+          <div className="hidden sm:flex space-x-4">
             <Link
               href="#whyWeStarted"
-              className="px-4 py-2 rounded-xl text-sm font-semibold text-black shadow hover:shadow-md transition-all duration-300 hover:bg-gray-200"
+              className="px-4 py-2 rounded-xl text-sm font-semibold text-black hover:bg-gray-200 transition"
             >
               About
             </Link>
             <Link
               href="#mission"
-              className="px-4 py-2 rounded-xl text-sm font-semibold text-black shadow hover:shadow-md transition-all duration-300 hover:bg-gray-200"
+              className="px-4 py-2 rounded-xl text-sm font-semibold text-black hover:bg-gray-200 transition"
             >
               Mission
             </Link>
             <Link
-              href=" https://cal.com/samxt"
-              className="px-4 py-2 rounded-xl text-sm font-semibold text-black shadow hover:shadow-md transition-all duration-300 hover:bg-gray-200"
+              href="https://cal.com/samxt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-xl text-sm font-semibold text-black hover:bg-gray-200 transition"
             >
               Talk to Founders
             </Link>
           </div>
 
-          {/* Hamburger */}
+          {/* Mobile Hamburger */}
           <div className="sm:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="flex flex-col justify-center items-center w-8 h-8"
+              aria-label="Toggle Menu"
             >
               <span
-                className={`block w-6 h-0.5 bg-black transition-all duration-300 ${isOpen ? "rotate-45 translate-y-1.5" : ""}`}
+                className={`block w-6 h-0.5 bg-black transition-transform duration-300 ${isOpen ? "rotate-45 translate-y-1.5" : ""}`}
               />
               <span
-                className={`block w-6 h-0.5 bg-black transition-all duration-300 my-1 ${isOpen ? "opacity-0" : ""}`}
+                className={`block w-6 h-0.5 bg-black my-1 transition-opacity duration-300 ${isOpen ? "opacity-0" : ""}`}
               />
               <span
-                className={`block w-6 h-0.5 bg-black transition-all duration-300 ${isOpen ? "-rotate-45 -translate-y-1.5" : ""}`}
+                className={`block w-6 h-0.5 bg-black transition-transform duration-300 ${isOpen ? "-rotate-45 -translate-y-1.5" : ""}`}
               />
             </button>
           </div>
         </div>
 
-        {/* Mobile Fullscreen Menu */}
+        {/* Mobile Menu */}
         {isOpen && (
-          <div className="sm:hidden bg-gray-100 rounded-b-3xl px-4 py-4 space-y-3">
+          <div className="sm:hidden bg-white px-4 py-4 space-y-3 rounded-b-3xl transition-all duration-300">
             <Link
-              href="/Vision"
-              className="block text-black bg-white hover:text-gray-300 hover:bg-gray-700 px-4 py-2 rounded-xl text-base font-semibold"
-            >
-              Vision
-            </Link>
-            <Link
-              href="#"
-              className="block text-black bg-white hover:text-gray-300 hover:bg-gray-700 px-4 py-2 rounded-xl text-base font-semibold"
+              href="#howItWorks"
+              onClick={handleClose}
+              className="block text-black hover:bg-gray-100 px-4 py-2 rounded-xl text-base font-medium"
             >
               How it works
             </Link>
             <Link
-              href="#"
-              className="block text-black bg-white hover:text-gray-300 hover:bg-gray-700 px-4 py-2 rounded-xl text-base font-semibold"
+              href="#ourVision"
+              onClick={handleClose}
+              className="block text-black hover:bg-gray-100 px-4 py-2 rounded-xl text-base font-medium"
+            >
+              Vision
+            </Link>
+            <Link
+              href="#mission"
+              onClick={handleClose}
+              className="block text-black hover:bg-gray-100 px-4 py-2 rounded-xl text-base font-medium"
+            >
+              Mission
+            </Link>
+            <Link
+              href="https://cal.com/samxt"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleClose}
+              className="block bg-black text-white text-center px-4 py-2 rounded-xl text-base font-medium hover:bg-gray-800"
             >
               Talk to Founders
             </Link>
