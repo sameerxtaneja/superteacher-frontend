@@ -3,22 +3,38 @@
 @import 'tailwindcss/utilities';
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    overflow-x: hidden;
-    
+  overflow-x: hidden;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
-/* For section snap scrolling, uncomment if you want snap scrolling */
-/*
-html {
-  scroll-snap-type: y mandatory;
+/* Nuclear option: zero spacing on everything for mobile */
+@media (max-width: 639px) {
+  section,
+  div,
+  header,
+  footer,
+  main,
+  nav,
+  article {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .container,
+  .max-w-screen-xl,
+  .max-w-5xl,
+  .px-4,
+  .px-6,
+  .px-10,
+  .py-16,
+  .pt-20,
+  .pb-20 {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
-Q
-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-*/

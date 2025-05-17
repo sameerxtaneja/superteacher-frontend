@@ -7,7 +7,7 @@ import HowItWorks from './components/HowItWorks';
 import VaraPowered from './components/VaraPowered';
 import Approach from './components/Approach';
 import ClosingCTA from './components/ClosingCTA';
-import PageNavigation from './components/PageNavigation';
+// import PageNavigation from './components/PageNavigation'; // Removed
 import WhyWeStarted from './components/WhyweStarted';
 import TeacherTestimonials from './components/buildingWithTeachers';
 import GradingSection from './components/GradingSection';
@@ -18,7 +18,7 @@ const Page = () => {
   return (
     <div className="bg-white overflow-x-hidden">
       <Navbar />
-      <PageNavigation />
+      {/* <PageNavigation /> */}
 
       {/* HERO - full-bleed with animated background grid */}
       <div id="hero" className="relative">
