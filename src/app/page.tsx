@@ -11,9 +11,7 @@ import ClosingCTA from './components/ClosingCTA';
 import PageNavigation from './components/PageNavigation';
 import WhyWeStarted from './components/WhyweStarted';
 import TeacherTestimonials from './components/buildingWithTeachers';
-import OurVision from './components/OurVision';
 import GradingSection from './components/GradingSection';
-import ConnectInvitation from './components/ConnectInvitation';
 import HeresHow from './components/Hereshow';
 import FadeIn from '@/components/FadeIn';
 import SectionDivider from '@/components/SectionDivider';
@@ -64,16 +62,6 @@ const Page = () => {
 
       <SectionDivider />
 
-      <div id="ourVision" className="py-10 md:py-16 bg-white rounded-t-[32px]">
-        <div className="max-w-screen-xl mx-auto px-4">
-          <FadeIn>
-            <OurVision />
-          </FadeIn>
-        </div>
-      </div>
-
-      <SectionDivider />
-
       <div id="heresHow" className="py-10 md:py-16 bg-white rounded-t-[32px]">
         <div className="max-w-screen-xl mx-auto px-4">
           <FadeIn>
@@ -109,16 +97,6 @@ const Page = () => {
           </FadeIn>
         </div>
       </div> */}
-
-      <SectionDivider />
-
-      <div id="connect-invite" className="py-10 md:py-16 bg-white rounded-t-[32px]">
-        <div className="max-w-screen-xl mx-auto px-4">
-          <FadeIn>
-            <ConnectInvitation />
-          </FadeIn>
-        </div>
-      </div>
 
       {/* <SectionDivider />
       <div id="approach" className="py-10 md:py-16 bg-white rounded-t-[32px]">
