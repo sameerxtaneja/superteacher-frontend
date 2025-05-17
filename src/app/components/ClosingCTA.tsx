@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import FadeIn from '@/components/FadeIn'; // adjust path if needed
+import FadeIn from '@/components/FadeIn';
 
 const ClosingCTA = () => {
   return (
@@ -9,12 +9,12 @@ const ClosingCTA = () => {
       <div className="max-w-5xl mx-auto text-left space-y-12">
         {/* Text Content */}
         <FadeIn>
-          <div className="space-y-4 max-w-3xl">
-            <h2 className="text-4xl md:text-6xl font-bold leading-tight">
-              Let AI do the grading.
+          <div className="space-y-2 max-w-3xl">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-bold leading-tight">
+              India’s first AI grading co-pilot
             </h2>
-            <h2 className="text-4xl md:text-6xl font-bold leading-tight">
-              You do the <span className="text-red-400">teaching.</span>
+            <h2 className="text-3xl sm:text-4xl md:text-2xl font-bold leading-tight text-[#cccccc]">
+              built for teachers.
             </h2>
           </div>
         </FadeIn>
@@ -55,7 +55,9 @@ const ClosingCTA = () => {
         {/* Bottom Line */}
         <FadeIn>
           <div className="mt-12 text-sm text-gray-400">
-            © {new Date().getFullYear()} Super Teacher. Built with love for teachers.
+            © {new Date().getFullYear()} Super Teacher. All rights reserved.
+          </div>
+          <div className="mt-2 text-sm text-gray-400"> Built with ❤️ for teachers. 
           </div>
         </FadeIn>
       </div>

@@ -9,7 +9,7 @@ const config: Config = {
     "./src/utils/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class', // ✅ enables manual dark mode switching via a class
+  darkMode: 'class',
   theme: {
     fontFamily: {
       sans: [
@@ -92,7 +92,6 @@ const config: Config = {
             maxWidth: '65ch',
           },
         },
-        // ✅ Added dark mode (invert) support for typography
         invert: {
           css: {
             color: theme('colors.gray.400'),
@@ -105,6 +104,15 @@ const config: Config = {
           },
         },
       }),
+      animation: {
+        background: 'moveBg 20s linear infinite',
+      },
+      keyframes: {
+        moveBg: {
+          '0%': { backgroundPosition: '0 0' },
+          '100%': { backgroundPosition: '90px 0' },
+        },
+      },
     },
   },
   plugins: [
