@@ -5,23 +5,23 @@ import FadeIn from '@/components/FadeIn';
 
 const ClosingCTA = () => {
   return (
-    <footer className="w-full px-6 md:px-16 py-16 text-[#1f1f1f] scroll-mt-28" id="closingCta">
-      <div className="max-w-5xl mx-auto text-left space-y-10">
+    <footer className="w-full px-6 md:px-16 py-20 text-[#1f1f1f] scroll-mt-28" id="closingCta">
+      <div className="w-full max-w-6xl mx-auto">
         {/* Text Content */}
         <FadeIn>
-          <div className="space-y-1 max-w-3xl">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight">
+          <div className="space-y-3">
+            <h2 className="text-2xl sm:text-3xl md:text-5xl font-Manrope-Bold leading-tight">
               India’s first AI grading co-pilot
             </h2>
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold leading-tight text-gray-500">
+            <h3 className="text-lg sm:text-xl md:text-3xl font-medium text-gray-500">
               built for teachers.
-            </h2>
+            </h3>
           </div>
         </FadeIn>
 
         {/* Social Icons Section */}
         <FadeIn>
-          <div className="flex gap-5 mt-8">
+          <div className="flex gap-6 mt-6">
             <a
               href="https://instagram.com"
               target="_blank"
@@ -58,7 +58,7 @@ const ClosingCTA = () => {
             © {new Date().getFullYear()} Super Teacher. All rights reserved.
           </div>
           <div className="mt-1 text-sm text-gray-400">
-            Built with ❤️ for teachers. 
+            Built with ❤️ for teachers.
           </div>
         </FadeIn>
       </div>
