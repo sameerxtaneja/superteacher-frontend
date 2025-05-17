@@ -9,13 +9,13 @@ const config: Config = {
     "./src/utils/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: 'class',
+  darkMode: 'class', // ✅ enables manual dark mode switching via a class
   theme: {
     fontFamily: {
       sans: [
         'Inter',
         'Manrope',
-        'Outfit',    // Outfit is part of the sans family
+        'Outfit',
         'ui-sans-serif',
         'system-ui',
         '-apple-system',
@@ -92,9 +92,16 @@ const config: Config = {
             maxWidth: '65ch',
           },
         },
+        // ✅ Added dark mode (invert) support for typography
         invert: {
           css: {
             color: theme('colors.gray.400'),
+            a: { color: theme('colors.gray.100') },
+            strong: { color: theme('colors.gray.100') },
+            h1: { color: theme('colors.gray.100') },
+            h2: { color: theme('colors.gray.100') },
+            h3: { color: theme('colors.gray.100') },
+            code: { color: theme('colors.gray.100') },
           },
         },
       }),
