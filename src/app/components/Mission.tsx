@@ -1,34 +1,42 @@
-'use client'
+"use client";
 
-import React from 'react'
+import React from "react";
 
 const Mission = () => {
-    return (
-        <section className="h-screen w-full flex items-center justify-center px-6">
-            <div className="max-w-6xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12">
-                {/* Text Content */}
-                <div className="md:w-1/2">
-                    <h2 className="text-5xl sm:text-6xl text-gray-800 mb-6 font-Manrope-Bold">
-                        Mission
-                    </h2>
+  return (
+    <section
+      id="mission"
+      className="relative w-full px-6 md:px-16 py-24  text-[#1f1f1f] scroll-mt-28"
+    >
+      <div className="max-w-5xl mx-auto text-left space-y-10">
+        {/* Section Label */}
+        <p className="uppercase text-xs tracking-widest text-gray-400 font-semibold">
+          Our Mission
+        </p>
 
-                    <p className="text-2xl text-gray-700 mb-6 font-Manrope-SemiBold">
-                        Our Mission is to give every teacher their time back, so
-                        they can focus on what they love-teaching
-                    </p>
-                </div>
+        {/* Heading */}
+        <h2 className="font-normal text-[48px] md:text-[56px] leading-[60px] text-[#1f1f1f]">
+          We give teachers their time back,
+          <br />
+          so they can focus on what they love,{" "}
+          <span className="text-red-400">teaching.</span>
+        </h2>
 
-                {/* Image */}
-                <div className="md:w-1/2 flex justify-center">
-                    <img
-                        src="/images/mission.png"
-                        alt="Vision Teacher Illustration"
-                        className="w-[320px] md:w-[420px] rounded-xl"
-                    />
-                </div>
-            </div>
-        </section>
-    )
-}
+        {/* Paragraphs */}
+        <div className="space-y-6 max-w-3xl">
+          {/* <p className="text-xl leading-8 font-medium text-[#1f1f1f]">
+            Our mission is to reduce the grading burden for every teacher. We’re
+            designing tools that support their workflow, not replace them.
+          </p>
 
-export default Mission
+          <p className="text-[20px] leading-8 text-[#1f1f1f]">
+            So they can sleep earlier. Smile more. And reconnect with why they
+            started teaching in the first place.
+          </p> */}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Mission;

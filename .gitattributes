@@ -1,0 +1,9 @@
+# Auto detect text files and normalize to LF in repo
+* text=auto
+
+# Explicitly set line endings for JS files
+*.js text eol=lf
+
+# Ignore line ending conversion for binaries, images etc.
+*.png binary
+*.jpg binary
