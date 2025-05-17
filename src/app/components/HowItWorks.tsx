@@ -8,9 +8,13 @@ const HowItWorks = () => {
       id="how-it-works"
       className="min-h-screen w-full flex flex-col justify-center items-center px-4 pt-0 pb-0 md:px-10 bg-white -mb-10"
     >
-      <h2 className="text-4xl md:text-6xl font-Manrope-Bold text-center -mt-16 mb-12">
+      <h2 className="text-4xl md:text-6xl font-Manrope-Bold text-center -mt-16 mb-2">
         How it works
       </h2>
+
+      <p className="text-lg md:text-xl text-gray-500 font-normal text-center mb-20">
+        a week of grading done in minutes.
+      </p>
 
       <div className="w-full max-w-6xl aspect-video rounded-xl overflow-hidden shadow-lg mb-0">
         <iframe

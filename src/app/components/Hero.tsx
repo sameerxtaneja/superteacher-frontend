@@ -15,7 +15,6 @@ const Hero = () => {
 
       {/* Foreground content */}
       <div className="text-center max-w-5xl relative z-10 pt-12 sm:pt-20">
-        {/* ^ This padding moves it down slightly */}
         <FadeIn>
           <h1 className="font-dm-sans font-[800] text-[36px] sm:text-[48px] md:text-[64px] lg:text-[96px] leading-tight tracking-tight text-[#1f1f1f]">
             Let AI do the{' '}
@@ -42,7 +41,7 @@ const Hero = () => {
           href="https://www.journalpressindia.com/gbs-impact-journal-of-multi-disciplinary-research/doi/10.58419/gbs.v10i2.1022416#:~:text=This%20qualitative%20study%20explores%20the,study%20concludes%20that%20addressing%20burnout"
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-16 mb-0 bg-white/70 backdrop-blur-lg border border-gray-100 shadow-xl rounded-2xl px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-6 max-w-5xl w-full transition hover:shadow-2xl hover:scale-[1.01] relative z-10"
+          className="mt-24 mb-0 bg-white/70 backdrop-blur-lg border border-gray-100 shadow-xl rounded-2xl px-8 py-8 flex flex-col sm:flex-row justify-between items-center gap-6 max-w-5xl w-full transition hover:shadow-2xl hover:scale-[1.01] relative z-10"
         >
           <p className="text-base sm:text-lg text-center sm:text-left text-gray-400 font-normal tracking-normal leading-relaxed">
             70% of teachers reported burnout in 2025.
@@ -54,11 +53,12 @@ const Hero = () => {
           </button>
         </a>
       </FadeIn>
+
       {/* Gradient Fade at Bottom */}
-<div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-white z-10 pointer-events-none" />
-{/* Smooth gradient fade at bottom */}
-<div className="absolute bottom-0 left-0 w-full h-20 z-10 pointer-events-none bg-gradient-to-b from-white/0 to-[#FFF7F0]" />
+      <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-b from-transparent to-white z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-20 z-10 pointer-events-none bg-gradient-to-b from-white/0 to-[#FFF7F0]" />
     </section>
   );
 };
+
 export default Hero;
