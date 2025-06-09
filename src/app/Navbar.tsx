@@ -55,7 +55,7 @@ export default function Navbar() {
               How?
             </Link>
             <Link
-              href="https://cal.com/samxt"
+              href="https://cal.com/sameerxtaneja"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 rounded-xl text-sm font-medium font-manrope text-black hover:bg-gray-200 transition"
@@ -108,7 +108,7 @@ export default function Navbar() {
               How?
             </Link>
             <Link
-              href="https://cal.com/samxt"
+              href="https://cal.com/sameerxtaneja"
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsOpen(false)}

@@ -18,26 +18,26 @@ const ConnectInvitation = () => {
 
         <FadeIn>
           <h2 className="font-normal text-[48px] md:text-[56px] leading-[60px] text-[#1f1f1f]">
-            We’re early. We’re building fast.
+            We're early. We're building fast.
           </h2>
         </FadeIn>
 
         <FadeIn>
           <p className="text-[36px] leading-[48px] text-gray-600 font-light max-w-3xl">
-            We’re listening more than we’re talking.
+            We're listening more than we're talking.
           </p>
         </FadeIn>
 
         <FadeIn>
           <p className="text-[24px] leading-[36px] font-normal max-w-3xl">
-            If you’re a teacher, a school, or just curious –{' '}
-            <span className="text-red-500 font-semibold">we’d love to talk.</span>
+            If you're a teacher, a school, or just curious –{' '}
+            <span className="text-red-500 font-semibold">we'd love to talk.</span>
           </p>
         </FadeIn>
 
         <FadeIn>
           <a
-            href="https://cal.com/samxt"
+            href="https://cal.com/sameerxtaneja"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block mt-6 px-8 py-4 bg-black text-white rounded-xl text-lg font-medium hover:bg-gray-800 transition transform hover:scale-105"

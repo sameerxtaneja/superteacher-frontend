@@ -39,13 +39,13 @@ const HeresHow = () => {
       <div className="max-w-5xl mx-auto text-left space-y-10">
         <FadeIn>
           <p className="uppercase text-xs tracking-widest text-gray-400 font-semibold">
-            Here’s how
+            Here's how
           </p>
         </FadeIn>
 
         <FadeIn>
           <h2 className="font-dm-sans font-normal text-[45px] leading-[56px] max-w-3xl">
-            We’re building an end-to-end exam automation co-pilot, powered by AI that understands <em>you</em>.
+            We're building an end-to-end exam automation co-pilot, powered by AI that understands <em>you</em>.
           </h2>
         </FadeIn>
 
@@ -68,7 +68,7 @@ const HeresHow = () => {
         <FadeIn>
           <div className="flex justify-center">
             <a
-              href="https://cal.com/samxt"
+              href="https://cal.com/sameerxtaneja"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block mt-6 px-8 py-4 bg-black text-white rounded-xl text-lg font-semibold hover:bg-gray-800 transition transform hover:scale-105"
